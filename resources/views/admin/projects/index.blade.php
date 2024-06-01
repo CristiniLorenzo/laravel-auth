@@ -11,6 +11,7 @@
                 <th>Client Name</th>
                 <th>Slug</th>
                 <th>Created at</th>
+                <th>Actions</th>
             </tr>
         </thead>
 
@@ -23,6 +24,11 @@
                     <td>{{ $project->slug }}</td>
                     <td>{{ $project->created_at }}</td>
 
+                    <td>
+                        <div>
+                            <a href=" {{ route('admin.projects.show', ['project' => $project->id]) }}" >SHOW MORE</a>
+                        </div>
+                    </td>
                 </tr>
             @endforeach
             
