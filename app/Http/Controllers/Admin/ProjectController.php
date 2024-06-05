@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -31,7 +32,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        // dd('create');
+        return view('admin.projects.create');    
     }
 
     /**
@@ -42,7 +44,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $formData = $request->all();
+        // dd($formData);
+
+        $newProject = new Project();
+        $newProject->fill($formData);
+        $newProject->slug = Str::slug($newProject->name, '-');
+        // dd($newProject);
+        $newProject->save();
+
+        return redirect()->route('admin.projects.show', ['project' => $newProject->id]);
     }
 
     /**
@@ -68,9 +79,14 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        // dd($project);
+        $data =[
+            'project' => $project
+        ];
+
+        return view('admin.projects.edit', $data);
     }
 
     /**
@@ -80,9 +96,15 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $formData = $request->all();
+        $formData['slug'] = Str::slug($formData['name'], '-');
+        // dd($formData);
+        $project->update($formData);
+
+        return redirect()->route('admin.projects.show', ['project' => $project->id]);
+
     }
 
     /**

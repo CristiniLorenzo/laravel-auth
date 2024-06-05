@@ -26,7 +26,11 @@
 
                     <td>
                         <div>
-                            <a href=" {{ route('admin.projects.show', ['project' => $project->id]) }}" >SHOW MORE</a>
+                            <a href=" {{ route('admin.projects.show', ['project' => $project->id]) }}" >Show More</a>
+                        </div>
+
+                        <div>
+                            <a href=" {{ route('admin.projects.edit', ['project' => $project->id]) }}" >Edit</a>
                         </div>
                     </td>
                 </tr>
