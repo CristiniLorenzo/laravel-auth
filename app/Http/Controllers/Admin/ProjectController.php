@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -44,6 +45,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'name'=> 'required|min:4|max:100|unique:projects,name',
+                'client_name'=> 'required|min:1|max:100',
+                'summary'=> 'nullable|min:5'
+            ]
+        );
+
         $formData = $request->all();
         // dd($formData);
 
@@ -98,6 +107,22 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->validate(
+            [
+                // 'name'=> 'required|min:4|max:100|unique:projects,name',
+                'name'=> [
+                    'required',
+                    'min:4',
+                    'max:100',
+                    // 'unique:projects,name',
+
+                    Rule::unique('projects')->ignore($project)
+                ],
+                'client_name'=> 'required|min:1|max:100',
+                'summary'=> 'nullable|min:5'
+            ]
+        );
+
         $formData = $request->all();
         $formData['slug'] = Str::slug($formData['name'], '-');
         // dd($formData);
